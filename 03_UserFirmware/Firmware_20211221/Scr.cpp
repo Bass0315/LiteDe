@@ -105,7 +105,6 @@ bool SerialUSB_Recive(void)
     rec_string += char(SerialUSB.read());
     delay(2);
   }
-
   //return
   if (rec_string.length() > 0)
     return true;

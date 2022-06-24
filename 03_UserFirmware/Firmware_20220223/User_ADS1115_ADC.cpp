@@ -34,11 +34,11 @@ bool ADS1115_Init(uint8_t address)
   ads.setOperateMode(ADS1115_MODE_SINGLE);
   ads.setOperateStaus(ADS1115_OS_SINGLE);
 
-  // ads.setPGAGain(ADS1115_PGA_6_144);    // 2/3x gain +/- 6.144V  1 bit =  0.1875mV (default)
+  ads.setPGAGain(ADS1115_PGA_6_144);    // 2/3x gain +/- 6.144V  1 bit =  0.1875mV (default)
   // ads.setPGAGain(ADS1115_PGA_4_096); // 1x gain   +/- 4.096V  1 bit =  0.125mV
   // ads.setPGAGain(ADS1115_PGA_2_048); // 2x gain   +/- 2.048V  1 bit =  0.0625mV
-  //ads.setPGAGain(ADS1115_PGA_1_024); // 4x gain   +/- 1.024V  1 bit =  0.03125mV
-  ads.setPGAGain(ADS1115_PGA_0_512); // 8x gain   +/- 0.512V  1 bit =  0.015625mV
+  // ads.setPGAGain(ADS1115_PGA_1_024); // 4x gain   +/- 1.024V  1 bit =  0.03125mV
+  // ads.setPGAGain(ADS1115_PGA_0_512); // 8x gain   +/- 0.512V  1 bit =  0.015625mV
   // ads.setPGAGain(ADS1115_PGA_0_256); // 16x gain  +/- 0.256V  1 bit =  0.0078125mV
 
   // ads.setSampleRate(ADS1115_DR_8); //8 SPS
@@ -80,9 +80,9 @@ void ADS1115_ChanelValue(void)
     {
       avg += adc[i][j];   //sum
     }
-    avg = avg / 5 / 10000.0 + 0.02; //avg
+    avg = avg / 5 / 10000.0 * 3.7; //avg
 
-    sprintf(buf, "AIN%d: ", i);
+    sprintf(buf, "AIN %d: ", i);
     SerialUSB.print(buf);
     Serial.print(avg);
     Serial.println(" V");
@@ -113,11 +113,11 @@ void ADS1115_Com(void)
   if (strstr(rec_string.c_str(), "ads1115") != NULL)
   {
     if (strstr(rec_string.c_str(), "0x49") != NULL)address = 0x49;
-        if (strstr(rec_string.c_str(), "0x4A") != NULL)address = 0x4A;
-              if (strstr(rec_string.c_str(), "0x4B") != NULL)address = 0x4B;
-                SerialUSB.println("ADC command start.");
-                ADS1115_Init(address) ? SerialUSB.println("ADS1115 Init OK.") : SerialUSB.println("ADS1115 Init FAILL.");
-                ADS1115_ChanelValue();
-                command_flag = true;
-      }
+    if (strstr(rec_string.c_str(), "0x4A") != NULL)address = 0x4A;
+    if (strstr(rec_string.c_str(), "0x4B") != NULL)address = 0x4B;
+    SerialUSB.println("ADC command start.");
+    ADS1115_Init(address) ? SerialUSB.println("ADS1115 Init OK.") : SerialUSB.println("ADS1115 Init FAILL.");
+    ADS1115_ChanelValue();
+    command_flag = true;
+  }
 }

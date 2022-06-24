@@ -50,6 +50,7 @@ void loop()
     SerialUART_Send();
     CAN_Send();
     RS485_Send();
+  
     ADC_AINxx();
     DIOxx();
     

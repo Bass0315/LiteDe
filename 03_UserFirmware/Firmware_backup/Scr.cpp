@@ -329,11 +329,11 @@ void RS485_Send(void)
 void RS485_Recive(void)
 {
   rec_string = "";
-  
+
   while (SerialRS485.available() > 0)
   {
     rec_string += char(SerialRS485.read());
-    delay(2);
+    delay(1);
   }
 
   //return
@@ -342,7 +342,6 @@ void RS485_Recive(void)
     SerialUSB.print("RS485 data:");
     SerialUSB.println(rec_string);
   }
-  digitalWrite(RS485_ContrlPin, LOW);
 }
 
 
